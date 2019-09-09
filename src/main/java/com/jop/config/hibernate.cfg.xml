@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+		
+<hibernate-configuration>
+	<session-factory>
+	
+
+		<!-- AJUSTES DE HIBERNATE -->
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+        
+		<!-- MAPEADO DE RECURSOS -->
+		<property name="show_sql">false</property>
+		<property name="format_sql">true</property>
+		<property name="use_sql_comments">true</property>
+		
+		<mapping resource="com/jop/hibernate/dto/Articulos.hbm.xml" />
+		<mapping resource="com/jop/hibernate/dto/LineaPedido.hbm.xml" />
+		<mapping resource="com/jop/hibernate/dto/Pedidos.hbm.xml" />
+		
+	</session-factory>
+</hibernate-configuration>

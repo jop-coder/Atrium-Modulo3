@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:icecore="http://www.icefaces.org/icefaces/core"
+	xmlns:ace="http://www.icefaces.org/icefaces/components"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	template="/WEB-INF/templates/template.xhtml">
+
+<!-- Archivo xhtml que alberga el formulario para dar de alta nuevos artículos  -->
+<!-- Autor: José Ortega Pérez -->
+<!-- Versión: 1.0 -->
+<!-- Since: 25-7-2018 -->
+
+	<ui:param name="title" value="Gestión de Articulos" />
+
+	<ui:define name="header">
+		<h:outputLabel value="Alta Nuevo Artículo" />
+	</ui:define>
+	<ui:define name="menu">
+		<h:button outcome="listaArticulos" value="Lista artículos" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="formu_nuevo_articulo">
+
+			<ace:panel id="nuevo_articulo_panel"
+				header="Datos del nuevo artículo" styleClass="required-styling-demo">
+				<h:panelGrid columns="1" width="100%"
+					styleClass="textEntryInputTable">
+
+					<ace:textEntry id="codigo"
+						value="#{nuevoArticulo_bean.nuevoArticulo.codigoArticulo}"
+						label="Código" labelPosition="left" required="true"
+						requiredIndicator="(*)" indicatorPosition="right">
+						<f:validateLongRange minimum="1" maximum="99999" />
+					</ace:textEntry>
+
+					<ace:textAreaEntry id="descripcion" cols="40"
+						value="#{nuevoArticulo_bean.nuevoArticulo.descripcionArticulo}"
+						label="Descripción" labelPosition="left" required="true"
+						requiredIndicator=" (*)" indicatorPosition="right">
+						<f:validateLength minimum="5" maximum="40" />
+					</ace:textAreaEntry>
+
+					<ace:textEntry id="precio"
+						value="#{nuevoArticulo_bean.nuevoArticulo.precioUnidadArticulo}"
+						label="Precio ud." labelPosition="left" required="true"
+						requiredIndicator="(*)" indicatorPosition="right">
+						<f:validateDoubleRange minimum="0.01" maximum="50000.00" />
+					</ace:textEntry>
+
+					<ace:textEntry id="cantidad"
+						value="#{nuevoArticulo_bean.nuevoArticulo.cantidad}"
+						label="Cantidad" labelPosition="left" required="true"
+						requiredIndicator="(*)" indicatorPosition="right">
+						<f:validateLongRange minimum="1" maximum="99999" />
+					</ace:textEntry>
+				</h:panelGrid>
+				<br />
+				<h:panelGrid columns="2" width="100%">
+					<h:commandButton action="#{articulosController.addArticulo}"
+						value="Alta nuevo articulo" />
+					<h:commandButton id="clearButton" value="Limpiar formulario"
+						actionListener="#{articulosController.clearForm}" immediate="true" />
+				</h:panelGrid>
+				<br />
+				<!-- PANELGRID PARA LOS MENSAJES -->
+				<h:panelGrid width="100%">
+					<ace:message for="codigo" id="codigoMsg" />
+					<ace:message for="descripcion" id="descripcionMsg" />
+					<ace:message for="precio" id="precioMsg" />
+					<ace:message for="cantidad" id="cantidadMsg" />
+				</h:panelGrid>
+			</ace:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

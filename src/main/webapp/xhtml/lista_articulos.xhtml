@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:icecore="http://www.icefaces.org/icefaces/core"
+	xmlns:ace="http://www.icefaces.org/icefaces/components"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	template="/WEB-INF/templates/template.xhtml">
+
+<!-- Archivo xhtml que alberga la lista de artículos y que permite la edición y el borrado de éstos.  -->
+<!-- Autor: José Ortega Pérez -->
+<!-- Versión: 1.0 -->
+<!-- Since: 25-7-2018 -->
+
+	<ui:param name="title" value="Gestión de Articulos" />
+
+	<ui:define name="header">
+		<h:outputLabel value="Gestión de Artículos" />
+	</ui:define>
+	<ui:define name="menu">
+		<h:button outcome="altaArticulo" value="Nuevo artículo" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="formu_articulos">
+
+			<h:panelGrid columns="1">
+
+				<ace:dataTable id="tabla_articulos" value="#{articulos_bean.lista}"
+					var="articulo" rows="10" paginator="true"
+					paginatorPosition="bottom" paginatorAlwaysVisible="true"
+					emptyMessage="Base de datos fuera de línea"
+					reorderableColumns="false" resizableColumns="false"
+					selectionMode="single" doubleClickSelect="true"
+					binding="#{table_articulo}" stateMap="#{articulos_bean.stateMap}"
+					rowSelectListener="#{articulos_bean.selectListener}"
+					rowUnselectListener="#{articulos_bean.deselectListener}">
+					<ace:ajax event="select" execute="@this"
+						render="@this formu_articulos:borrarButton" />
+
+					<ace:columnGroup>
+						<ace:row>
+							<ace:column headerText="LISTADO DE ARTICULOS" colspan="5" />
+						</ace:row>
+						<ace:row>
+							<ace:column headerText="Código"
+								filterBy="#{articulo.codigoArticulo}" filterMatchMode="exact"
+								sortBy="#{articulo.codigoArticulo}" />
+							<ace:column headerText="Descripción" />
+							<ace:column headerText="Precio ud" />
+							<ace:column headerText="Cantidad" />
+							<ace:column headerText="Editar" />
+						</ace:row>
+					</ace:columnGroup>
+					<ace:column id="col_codigoArticulo">
+						<h:outputText id="codigo_articulo"
+							value="#{articulo.codigoArticulo}" />
+					</ace:column>
+
+					<ace:column id="col_descripcionArticulo">
+						<ace:cellEditor>
+							<f:facet name="output">
+								<h:outputText id="descripcion_articulo"
+									value="#{articulo.descripcionArticulo}" />
+							</f:facet>
+							<f:facet name="input">
+								<ace:textEntry id="descripcion_articulo_input"
+									value="#{articulo.descripcionArticulo}" />
+							</f:facet>
+						</ace:cellEditor>
+					</ace:column>
+
+					<ace:column id="col_precioArticulo">
+						<ace:cellEditor>
+							<f:facet name="output">
+								<h:outputText id="precio_articulo"
+									value="#{articulo.precioUnidadArticulo}">
+									<f:convertNumber type="currency" currencySymbol="€"
+										groupingUsed="true" minFractionDigits="2"
+										maxFractionDigits="2" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<ace:textEntry id="precio_articulo_input"
+									value="#{articulo.precioUnidadArticulo}" />
+							</f:facet>
+						</ace:cellEditor>
+					</ace:column>
+
+					<ace:column id="col_cantidadArticulo">
+						<ace:cellEditor>
+							<f:facet name="output">
+								<h:outputText id="cantidad_articulo"
+									value="#{articulo.cantidad}" />
+							</f:facet>
+							<f:facet name="input">
+								<ace:textEntry id="cantidad_articulo_input"
+									value="#{articulo.cantidad}" />
+							</f:facet>
+						</ace:cellEditor>
+					</ace:column>
+					<ace:column>
+						<ace:rowEditor id="editor"
+							rowEditListener="#{articulos_bean.rowEditListener}" />
+					</ace:column>
+				</ace:dataTable>
+
+				<ace:pushButton id="borrarButton" value="Borrar articulo"
+					action="#{articulosController.borraArticulo}" immediate="true"
+					disabled="#{not articulos_bean.seleccionado}">
+				</ace:pushButton>
+
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<div>Nota: Para borrar un artículo hay que seleccionarlo previamente con dobleclick.</div>
+	</ui:define>
+</ui:composition>

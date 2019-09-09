@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans default-autowire="byName" default-lazy-init="true"
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- **** DATASOURCE REQUERIDO POR TRANSACTION MANAGER **** -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@servicios.grupoatrium.com:1521:XE" />
+		<property name="username" value="user" />
+		<property name="password" value="pass" />
+	</bean>
+
+	<!-- **** CONEXION A LA BASE DATOS **** -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:com/jop/config/hibernate.cfg.xml" />
+	</bean>
+
+
+	<!-- ***** ZONA DE TRANSACCIONES ***** -->
+	<!-- **** GESTOR TRANSACCIONAL **** -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- DAOS ***************************************************************** -->
+	<bean id="articulosDAO" class="com.jop.hibernate.dao.ArticulosDAO"
+		scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="lineaPedidoDAO" class="com.jop.hibernate.dao.LineaPedidoDAO"
+		scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="pedidosDAO" class="com.jop.hibernate.dao.PedidosDAOext"
+		scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- FACHADAS ************************************************************* -->
+	<bean id="gestionArticulos" class="com.jop.hibernate.modelo.GestionArticulos"
+		scope="prototype">
+		<property name="articuloDAO" ref="articulosDAO" />
+	</bean>
+	<bean id="gestionLineaPedido" class="com.jop.hibernate.modelo.GestionLineaPedidos"
+		scope="prototype">
+		<property name="lineaPedidoDAO" ref="lineaPedidoDAO" />
+	</bean>
+	<bean id="gestionPedido" class="com.jop.hibernate.modelo.GestionPedidos"
+		scope="prototype">
+		<property name="pedidoDAO" ref="pedidosDAO" />
+	</bean>
+
+
+
+
+</beans>

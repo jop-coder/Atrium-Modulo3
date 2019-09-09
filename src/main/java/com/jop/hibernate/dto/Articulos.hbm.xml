@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18-jul-2018 15:11:41 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="com.jop.hibernate.dto.Articulos" table="ARTICULOS" optimistic-lock="version" schema="JOL181">
+        <id name="codigoArticulo" type="int">
+            <column name="CODIGO_ARTICULO" precision="5" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcionArticulo" type="string">
+            <column name="DESCRIPCION_ARTICULO" length="40" />
+        </property>
+        <property name="precioUnidadArticulo" type="big_decimal">
+            <column name="PRECIO_UNIDAD_ARTICULO" precision="11" />
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="CANTIDAD" precision="5" scale="0" />
+        </property>
+        <set name="lineaPedidos" table="LINEA_PEDIDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIGO_ARTICULO" precision="5" scale="0" />
+            </key>
+            <one-to-many class="com.jop.hibernate.dto.LineaPedido" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18-jul-2018 15:11:41 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="com.jop.hibernate.dto.LineaPedido" table="LINEA_PEDIDO" optimistic-lock="version" schema="JOL181">
+        <id name="codigoLineaPedido" type="long">
+            <column name="CODIGO_LINEA_PEDIDO" precision="10" scale="0" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="pedido" class="com.jop.hibernate.dto.Pedidos" fetch="select">
+            <column name="NUMERO_PEDIDO" precision="5" scale="0" />
+        </many-to-one>
+        <many-to-one name="articulos" class="com.jop.hibernate.dto.Articulos" fetch="select">
+            <column name="CODIGO_ARTICULO" precision="5" scale="0" />
+        </many-to-one>
+        <property name="precioUnidadArticulo" type="big_decimal">
+            <column name="PRECIO_UNIDAD_ARTICULO" precision="11" />
+        </property>
+        <property name="numeroUnidadesArticulo" type="java.lang.Integer">
+            <column name="NUMERO_UNIDADES_ARTICULO" precision="5" scale="0" />
+        </property>
+        <property name="porcentajeDescuento" type="big_decimal">
+            <column name="PORCENTAJE_DESCUENTO" precision="4" />
+        </property>
+    </class>
+</hibernate-mapping>

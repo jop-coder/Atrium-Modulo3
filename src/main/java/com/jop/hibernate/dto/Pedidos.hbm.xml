@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18-jul-2018 15:11:41 by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+	<class name="com.jop.hibernate.dto.Pedidos" table="PEDIDOS"	optimistic-lock="version" schema="JOL181">
+		<id name="numeroPedido" type="int">
+			<column name="NUMERO_PEDIDO" precision="5" scale="0" />
+			<generator class="assigned" />
+		</id>
+		<property name="fechaPedido" type="date">
+			<column name="FECHA_PEDIDO" length="7" />
+		</property>
+		<property name="portePedido" type="big_decimal">
+			<column name="PORTE_PEDIDO" precision="11" />
+		</property>
+		<property name="seguroPedido" type="big_decimal">
+			<column name="SEGURO_PEDIDO" precision="11" />
+		</property>
+		<property name="otrosCargosPedido" type="big_decimal">
+			<column name="OTROS_CARGOS_PEDIDO" precision="11" />
+		</property>
+		<property name="totalCargosPedido" type="big_decimal">
+			<column name="TOTAL_CARGOS_PEDIDO" precision="11" />
+		</property>
+		<property name="totalBrutoPedido" type="big_decimal">
+			<column name="TOTAL_BRUTO_PEDIDO" precision="11" />
+		</property>
+		<property name="porcentajeIvaPedido" type="java.lang.Byte">
+			<column name="PORCENTAJE_IVA_PEDIDO" precision="2" scale="0" />
+		</property>
+		<property name="ivaPedido" type="big_decimal">
+			<column name="IVA_PEDIDO" precision="11" />
+		</property>
+		<property name="totalFacturaPedido" type="big_decimal">
+			<column name="TOTAL_FACTURA_PEDIDO" precision="11" />
+		</property>
+		<property name="codigoCliente" type="int">
+			<column name="CODIGO_CLIENTE" precision="5" scale="0"
+				not-null="true" />
+		</property>
+			<set name="lineaPedidos" table="LINEA_PEDIDO" cascade="all-delete-orphan" inverse="false">
+				<key>
+					<column name="NUMERO_PEDIDO" precision="5" scale="0" />
+				</key>
+				<one-to-many class="com.jop.hibernate.dto.LineaPedido" />
+			</set>
+	</class>
+</hibernate-mapping>
